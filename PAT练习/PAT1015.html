@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>1015 Reversible Primes | Unknown Page</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="404">
+    
+    <link rel="preload" href="/assets/css/0.styles.2aaeaa15.css" as="style"><link rel="preload" href="/assets/js/app.20b2d5c1.js" as="script"><link rel="preload" href="/assets/js/4.3d4435c2.js" as="script"><link rel="preload" href="/assets/js/18.d80c0a21.js" as="script"><link rel="prefetch" href="/assets/js/10.dbfe23b4.js"><link rel="prefetch" href="/assets/js/11.c03d523b.js"><link rel="prefetch" href="/assets/js/12.b18b8cab.js"><link rel="prefetch" href="/assets/js/13.4d13f343.js"><link rel="prefetch" href="/assets/js/14.a732792c.js"><link rel="prefetch" href="/assets/js/15.68bfca7e.js"><link rel="prefetch" href="/assets/js/16.4ad6b832.js"><link rel="prefetch" href="/assets/js/17.f2bb4291.js"><link rel="prefetch" href="/assets/js/19.ba69fd38.js"><link rel="prefetch" href="/assets/js/2.4f6c7076.js"><link rel="prefetch" href="/assets/js/20.f744bb2a.js"><link rel="prefetch" href="/assets/js/21.c6a8116a.js"><link rel="prefetch" href="/assets/js/22.dda03136.js"><link rel="prefetch" href="/assets/js/23.605e317c.js"><link rel="prefetch" href="/assets/js/3.a4197e99.js"><link rel="prefetch" href="/assets/js/5.d481feb1.js"><link rel="prefetch" href="/assets/js/6.acb57dd8.js"><link rel="prefetch" href="/assets/js/7.9b3c79b3.js"><link rel="prefetch" href="/assets/js/8.2ceb428a.js"><link rel="prefetch" href="/assets/js/9.ea563b07.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.2aaeaa15.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="layout-body"><div class="markdown-body content__default"><h1 id="_1015-reversible-primes"><a href="#_1015-reversible-primes" class="header-anchor">#</a> 1015 Reversible Primes</h1> <blockquote><p>A <strong>reversible prime</strong> in any number system is a prime whose &quot;reverse&quot; in that number system is also a prime. For example in the decimal system 73 is a reversible prime because its reverse 37 is also a prime.</p> <p>Now given any two positive integers <em>N</em> (&lt;10^5) and <em>D</em> (1&lt;<em>D</em>≤10), you are supposed to tell if <em>N</em> is a reversible prime with radix <em>D</em>.</p> <h3 id="input-specification"><a href="#input-specification" class="header-anchor">#</a> Input Specification:</h3> <p>The input file consists of several test cases. Each case occupies a line which contains two integers <em>N</em> and <em>D</em>. The input is finished by a negative <em>N</em>.</p> <h3 id="output-specification"><a href="#output-specification" class="header-anchor">#</a> Output Specification:</h3> <p>For each test case, print in one line <code>Yes</code> if <em>N</em> is a reversible prime with radix <em>D</em>, or <code>No</code> if not.</p></blockquote> <h2 id="description"><a href="#description" class="header-anchor">#</a> Description</h2> <p>进制转换与素数判断</p> <h2 id="solution"><a href="#solution" class="header-anchor">#</a> Solution</h2> <div class="language-cpp extra-class"><pre class="language-cpp"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;queue&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;math.h&gt;</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">bool</span> <span class="token function">isPrime</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 1 不算</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// 注意这里能取到平方根</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token function">sqrt</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">%</span> i <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    vector<span class="token operator">&lt;</span>pair<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">&gt;&gt;</span> nums<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> N<span class="token punctuation">,</span> D<span class="token punctuation">;</span>
+        cin <span class="token operator">&gt;&gt;</span> N<span class="token punctuation">;</span>
+        <span class="token comment">// 如果输入是负数则退出循环</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>N <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            cin <span class="token operator">&gt;&gt;</span> D<span class="token punctuation">;</span>
+            nums<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token function">make_pair</span><span class="token punctuation">(</span>N<span class="token punctuation">,</span> D<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> N <span class="token operator">=</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>first<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> D <span class="token operator">=</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>second<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">isPrime</span><span class="token punctuation">(</span>N<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">&quot;No&quot;</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 进制转换，利用队列倒序转换回来</span>
+            queue<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> digits<span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>N <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                digits<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>N <span class="token operator">%</span> D<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                N <span class="token operator">=</span> N <span class="token operator">/</span> D<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            N <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span> digits<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                N <span class="token operator">=</span> N <span class="token operator">*</span> D <span class="token operator">+</span> digits<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                digits<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span><span class="token function">isPrime</span><span class="token punctuation">(</span>N<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">&quot;Yes&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;No&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="review"><a href="#review" class="header-anchor">#</a> Review</h2> <p>这题测试用例中1不算素数，判断素数时能取到平方根。</p></div> <!----></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.20b2d5c1.js" defer></script><script src="/assets/js/4.3d4435c2.js" defer></script><script src="/assets/js/18.d80c0a21.js" defer></script>
+  </body>
+</html>

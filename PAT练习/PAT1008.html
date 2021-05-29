@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>1008 Evelator | Unknown Page</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="404">
+    
+    <link rel="preload" href="/assets/css/0.styles.2aaeaa15.css" as="style"><link rel="preload" href="/assets/js/app.20b2d5c1.js" as="script"><link rel="preload" href="/assets/js/4.3d4435c2.js" as="script"><link rel="preload" href="/assets/js/12.b18b8cab.js" as="script"><link rel="prefetch" href="/assets/js/10.dbfe23b4.js"><link rel="prefetch" href="/assets/js/11.c03d523b.js"><link rel="prefetch" href="/assets/js/13.4d13f343.js"><link rel="prefetch" href="/assets/js/14.a732792c.js"><link rel="prefetch" href="/assets/js/15.68bfca7e.js"><link rel="prefetch" href="/assets/js/16.4ad6b832.js"><link rel="prefetch" href="/assets/js/17.f2bb4291.js"><link rel="prefetch" href="/assets/js/18.d80c0a21.js"><link rel="prefetch" href="/assets/js/19.ba69fd38.js"><link rel="prefetch" href="/assets/js/2.4f6c7076.js"><link rel="prefetch" href="/assets/js/20.f744bb2a.js"><link rel="prefetch" href="/assets/js/21.c6a8116a.js"><link rel="prefetch" href="/assets/js/22.dda03136.js"><link rel="prefetch" href="/assets/js/23.605e317c.js"><link rel="prefetch" href="/assets/js/3.a4197e99.js"><link rel="prefetch" href="/assets/js/5.d481feb1.js"><link rel="prefetch" href="/assets/js/6.acb57dd8.js"><link rel="prefetch" href="/assets/js/7.9b3c79b3.js"><link rel="prefetch" href="/assets/js/8.2ceb428a.js"><link rel="prefetch" href="/assets/js/9.ea563b07.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.2aaeaa15.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="layout-body"><div class="markdown-body content__default"><h1 id="_1008-evelator"><a href="#_1008-evelator" class="header-anchor">#</a> 1008 Evelator</h1> <blockquote><p>The highest building in our city has only one elevator. A request list is made up with <em>N</em> positive numbers. The numbers denote at which floors the elevator will stop, in specified order. It costs 6 seconds to move the elevator up one floor, and 4 seconds to move down one floor. The elevator will stay for 5 seconds at each stop.</p> <p>For a given request list, you are to compute the total time spent to fulfill the requests on the list. The elevator is on the 0th floor at the beginning and does not have to return to the ground floor when the requests are fulfilled.</p> <h3 id="input-specification"><a href="#input-specification" class="header-anchor">#</a> Input Specification:</h3> <p>Each input file contains one test case. Each case contains a positive integer <em>N</em>, followed by <em>N</em> positive numbers. All the numbers in the input are less than 100.</p> <h3 id="output-specification"><a href="#output-specification" class="header-anchor">#</a> Output Specification:</h3> <p>For each test case, print the total time on a single line.</p></blockquote> <h2 id="description"><a href="#description" class="header-anchor">#</a> Description</h2> <p>算术题</p> <h2 id="solution"><a href="#solution" class="header-anchor">#</a> Solution</h2> <div class="language-cpp extra-class"><pre class="language-cpp"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;math.h&gt;</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> n<span class="token punctuation">;</span>
+    cin <span class="token operator">&gt;&gt;</span> n<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> num<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        cin <span class="token operator">&gt;&gt;</span> num<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// 起始电梯位置为0</span>
+    <span class="token keyword">int</span> pre <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 根据上升/下降增减相应的楼层</span>
+        sum <span class="token operator">+=</span> <span class="token punctuation">(</span><span class="token function">abs</span><span class="token punctuation">(</span>num<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> pre<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>num<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&gt;</span> pre <span class="token operator">?</span> <span class="token number">6</span> <span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        pre <span class="token operator">=</span> num<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        sum <span class="token operator">+=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    cout <span class="token operator">&lt;&lt;</span> sum<span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <!----></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.20b2d5c1.js" defer></script><script src="/assets/js/4.3d4435c2.js" defer></script><script src="/assets/js/12.b18b8cab.js" defer></script>
+  </body>
+</html>
